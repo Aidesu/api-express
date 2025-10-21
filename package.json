@@ -1,0 +1,25 @@
+{
+    "name": "api-express",
+    "version": "1.0.0",
+    "description": "First api with express",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Aidesu/api-express.git"
+    },
+    "keywords": [],
+    "author": "",
+    "type": "module",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Aidesu/api-express/issues"
+    },
+    "homepage": "https://github.com/Aidesu/api-express#readme",
+    "dependencies": {
+        "express": "^5.1.0"
+    }
+}
