@@ -5,6 +5,8 @@ import {
     deletePlanets,
 } from "../models/planets.js";
 
+//* READ
+
 export function readAllPlanetsController(req, res) {
     const planets = readAllPlanets();
     if (planets.length === 0) {
@@ -13,12 +15,16 @@ export function readAllPlanetsController(req, res) {
     res.status(200).json(planets);
 }
 
+//* CREATE
+
 export function createPlanetController(req, res) {
     const newPlanet = createPlanets(req.body);
     return res.status(200).json({ message: "planet ajouter" + newPlanet });
 }
 
-export function delletePlanetController(req, res) {
+//* DELETE
+
+export function deletePlanetController(req, res) {
     const planets = readAllPlanets();
     const planet = planets.find((p) => p.id == req.params.id);
     if (!planet) {
@@ -30,7 +36,7 @@ export function delletePlanetController(req, res) {
         .json({ message: "La planette " + planet.name + " a ete supprimer" });
 }
 
-//! #################### Stuck here ####################
+//* UPDATE
 
 export function updatePlanetController(req, res) {
     const planets = readAllPlanets();
@@ -57,5 +63,3 @@ export function updatePlanetController(req, res) {
     updatePlanets(planetObj);
     return res.status(200).json({ message: "Entity has been updated" });
 }
-
-//! ####################################################
