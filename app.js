@@ -1,24 +1,48 @@
 import express from "express";
+import usersRoutes from "./routes/usersRoute.js";
+import path from "path";
 import {
-    createPlanetController,
-    readAllPlanetsController,
-    updatePlanetController,
-    delletePlanetController,
+  createPlanetController,
+  readAllPlanetsController,
+  updatePlanetController,
+  delletePlanetController,
 } from "./controllers/PlanetsController.js";
-import { getAllSatellitesController } from "./controllers/SatellitesController.js";
+import {
+  getAllSatellitesController,
+  createSatelliteController,
+  deleteSatelliteController,
+  updateSatelliteController,
+} from "./controllers/SatellitesController.js";
+
+import {
+  loginController,
+  loadLoginPage,
+} from "./controllers/authController.js";
+
+import { body, validationResult } from "express-validator";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.set("view engine", "pug");
+app.set("views", "./views");
 
 //* CRUD planets
 app.post("/planets", createPlanetController);
 app.get("/planets", readAllPlanetsController);
-app.get("/planets", updatePlanetController);
+app.put("/planets", updatePlanetController);
 app.delete("/planets/:id", delletePlanetController);
 
-app.get("/feur", getAllSatellitesController);
+app.post("/satellites", createSatelliteController);
+app.get("/satellites", getAllSatellitesController);
+app.put("/satellites", updateSatelliteController);
+app.delete("/satellites/:id", deleteSatelliteController);
+
+app.use("/users", usersRoutes);
+
+app.get("/login", loadLoginPage);
+app.post("/login", loginController);
 
 app.listen(port, () => console.log("Server running on port : " + port));
 
