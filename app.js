@@ -1,52 +1,20 @@
 import express from "express";
 import usersRoutes from "./routes/usersRoute.js";
-import path from "path";
-import {
-  createPlanetController,
-  readAllPlanetsController,
-  updatePlanetController,
-  delletePlanetController,
-} from "./controllers/PlanetsController.js";
-import {
-  getAllSatellitesController,
-  createSatelliteController,
-  deleteSatelliteController,
-  updateSatelliteController,
-} from "./controllers/SatellitesController.js";
-
-import {
-  loginController,
-  loadLoginPage,
-} from "./controllers/authController.js";
-
-import { body, validationResult } from "express-validator";
+import planetsRoutes from "./routes/planetsRoute.js";
+import satellitesRoutes from "./routes/satellitesRoute.js";
+import authRoutes from "./routes/authRoute.js";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
-app.set("view engine", "pug");
-app.set("views", "./views");
 
-//* CRUD planets
-app.post("/planets", createPlanetController);
-app.get("/planets", readAllPlanetsController);
-app.put("/planets", updatePlanetController);
-app.delete("/planets/:id", delletePlanetController);
-
-app.post("/satellites", createSatelliteController);
-app.get("/satellites", getAllSatellitesController);
-app.put("/satellites", updateSatelliteController);
-app.delete("/satellites/:id", deleteSatelliteController);
-
+app.use("/planets", planetsRoutes);
+app.use("/satellites", satellitesRoutes);
 app.use("/users", usersRoutes);
-
-app.get("/login", loadLoginPage);
-app.post("/login", loginController);
+app.post("/login", authRoutes);
 
 app.listen(port, () => console.log("Server running on port : " + port));
-
-//* GET planets
 
 // app.get("/planets", (req, res) => {
 //     if (planets.length === 0) {
@@ -56,7 +24,7 @@ app.listen(port, () => console.log("Server running on port : " + port));
 //     return res.status(200).json(planets);
 // // });
 
-// //! GET from id planets
+// // GET from id planets
 
 // app.get("/planets/:id", (req, res) => {
 //     const planet = planets.find((p) => p.id == req.params.id);
