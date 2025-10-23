@@ -3,16 +3,18 @@ import usersRoutes from "./routes/usersRoute.js";
 import planetsRoutes from "./routes/planetsRoute.js";
 import satellitesRoutes from "./routes/satellitesRoute.js";
 import authRoutes from "./routes/authRoute.js";
+import { connectDB } from "./config/db.js";
 
 const app = express();
 const port = 3000;
 
+connectDB();
 app.use(express.json());
 
 app.use("/planets", planetsRoutes);
 app.use("/satellites", satellitesRoutes);
 app.use("/users", usersRoutes);
-app.post("/login", authRoutes);
+app.use("/login", authRoutes);
 
 app.listen(port, () => console.log("Server running on port : " + port));
 
