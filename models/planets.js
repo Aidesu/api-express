@@ -16,24 +16,40 @@ export default Planet;
 
 //* CREATE
 export async function createPlanets(planet) {
-    const newPlanet = new Planet(planet);
-    await newPlanet.save();
-    return newPlanet;
+    try {
+        const newPlanet = new Planet(planet);
+        await newPlanet.save();
+        return newPlanet;
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
 }
 
 //* READ
 export async function readAllPlanets() {
-    return await Planet.find();
+    try {
+        return await Planet.find();
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
 }
 
 //* UPDATE
 export async function updatePlanets(planetObj, id) {
-    await Planet.updateOne({ _id: id }, { $set: planetObj });
+    try {
+        await Planet.updateOne({ _id: id }, { $set: planetObj });
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
 }
 
 //* DELETE
 export async function deletePlanets(planetId) {
-    await Planet.findByIdAndDelete(planetId);
+    try {
+        await Planet.findByIdAndDelete(planetId);
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
 }
 
 //* ########################## DATA ##########################

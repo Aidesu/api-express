@@ -3,39 +3,51 @@ import User from "../models/users.js";
 
 //* CREATE
 export async function createUserController(req, res) {
-    const users = await readAllUsers();
-    const saltRounds = 10;
-    const user = users.find((u) => u.email === req.body.email);
-    if (user) {
-        return res.status(400).json({ message: "User already exists" });
+    try {
+        const users = await readAllUsers();
+        const saltRounds = 10;
+        const user = users.find((u) => u.email === req.body.email);
+        if (user) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+
+        const { username, email } = req.body;
+        const hashPwd = bcrypt.hashSync(req.body.pwd, saltRounds);
+
+        const newUser = new User({ username, email, hashPwd });
+        createUser(newUser);
+        res.status(200).json({ newUser });
+    } catch (e) {
+        return res.status(500).json({ message: e.message });
     }
-
-    const { username, email } = req.body;
-    const hashPwd = bcrypt.hashSync(req.body.pwd, saltRounds);
-
-    const newUser = new User({ username, email, hashPwd });
-    createUser(newUser);
-    res.status(200).json({ newUser });
 }
 
 //* READ
 export async function readAllUsersController(req, res) {
-    const users = await User.find();
-    if (users.length === 0) {
-        return res.status(404).json({ message: "No user found" });
+    try {
+        const users = await User.find();
+        if (users.length === 0) {
+            return res.status(404).json({ message: "No user found" });
+        }
+        res.status(200).json(users);
+    } catch (e) {
+        return res.status(500).json({ message: e.message });
     }
-    res.status(200).json(users);
 }
 
 //* DELETE
 export async function deleteUserController(req, res) {
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    }
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
-    deleteUser(user._id);
-    return res
-        .status(200)
-        .json({ message: "User " + user.email + " as been deleted" });
+        deleteUser(user._id);
+        return res
+            .status(200)
+            .json({ message: "User " + user.email + " as been deleted" });
+    } catch (e) {
+        return res.status(500).json({ message: e.message });
+    }
 }
