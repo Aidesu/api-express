@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body } from "express-validator";
+import { body, validationResult } from "express-validator";
 
 import {
     readAllUsersController,
@@ -24,6 +24,6 @@ router.post(
     }
 );
 router.get("/", readAllUsersController);
-router.delete("/:id", deleteUserController);
+router.delete("/", deleteUserController);
 
 export default router;

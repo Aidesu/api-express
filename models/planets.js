@@ -1,117 +1,134 @@
-export function readAllPlanets() {
-  return planets;
+import mongoose from "mongoose";
+const { Schema } = mongoose;
+
+const planetSchema = new Schema({
+    name: String,
+    size_km: Number,
+    orbital_speed_kms: Number,
+    surface_temperature_c: Number,
+    core_temperature_c: Number,
+    distance_from_sun_mkm: Number,
+    type: String,
+});
+
+const Planet = mongoose.model("planet", planetSchema);
+export default Planet;
+
+export async function readAllPlanets() {
+    return await Planet.find();
 }
 
-export function createPlanets(newPlanet) {
-  planets.push(newPlanet);
-  return newPlanet;
+export async function createPlanets(planet) {
+    const newPlanet = new Planet(planet);
+    await newPlanet.save();
+    return newPlanet;
 }
 
 export function deletePlanets(planetId) {
-  planets.splice(planetId, 1);
+    planets.splice(planetId, 1);
 }
 
 export function updatePlanets(planetObj) {
-  let planet = planets.find((p) => p.id == planetObj.id);
-  if (!planet) {
-    return "No planet found ### from models";
-  }
+    let planet = planets.find((p) => p.id == planetObj.id);
+    if (!planet) {
+        return "No planet found ### from models";
+    }
 
-  //   planet.id = planet.id;
-  //   planet.name = planetObj.name;
-  //   planet.size_km = planetObj.size_km;
-  //   planet.orbital_speed_kms = planetObj.orbital_speed_kms;
-  //   planet.surface_temperature_c = planetObj.surface_temperature_c;
-  //   planet.core_temperature_c = planetObj.core_temperature_c;
-  //   planet.distance_from_sun_mkm = planetObj.distance_from_sun_mkm;
-  //   planet.type = planetObj.type;
+    //   planet.id = planet.id;
+    //   planet.name = planetObj.name;
+    //   planet.size_km = planetObj.size_km;
+    //   planet.orbital_speed_kms = planetObj.orbital_speed_kms;
+    //   planet.surface_temperature_c = planetObj.surface_temperature_c;
+    //   planet.core_temperature_c = planetObj.core_temperature_c;
+    //   planet.distance_from_sun_mkm = planetObj.distance_from_sun_mkm;
+    //   planet.type = planetObj.type;
 
-  planets[planet.id - 1] = planetObj;
+    planets[planet.id - 1] = planetObj;
 
-  return planets;
+    return planets;
 }
 
 //* ########################## DATA ##########################
 
 let planets = [
-  {
-    id: 1,
-    name: "Mercury",
-    size_km: 4879,
-    orbital_speed_kms: 47.4,
-    surface_temperature_c: 167,
-    core_temperature_c: 7000,
-    distance_from_sun_mkm: 57.9,
-    type: "Terrestrial",
-  },
-  {
-    id: 2,
-    name: "Venus",
-    size_km: 12104,
-    orbital_speed_kms: 35.0,
-    surface_temperature_c: 464,
-    core_temperature_c: 7000,
-    distance_from_sun_mkm: 108.2,
-    type: "Terrestrial",
-  },
-  {
-    id: 3,
-    name: "Earth",
-    size_km: 12742,
-    orbital_speed_kms: 29.8,
-    surface_temperature_c: 15,
-    core_temperature_c: 6000,
-    distance_from_sun_mkm: 149.6,
-    type: "Terrestrial",
-  },
-  {
-    id: 4,
-    name: "Mars",
-    size_km: 6779,
-    orbital_speed_kms: 24.1,
-    surface_temperature_c: -65,
-    core_temperature_c: 1500,
-    distance_from_sun_mkm: 227.9,
-    type: "Terrestrial",
-  },
-  {
-    id: 5,
-    name: "Jupiter",
-    size_km: 139820,
-    orbital_speed_kms: 13.1,
-    surface_temperature_c: -110,
-    core_temperature_c: 24000,
-    distance_from_sun_mkm: 778.5,
-    type: "Gas giant",
-  },
-  {
-    id: 6,
-    name: "Saturn",
-    size_km: 116460,
-    orbital_speed_kms: 9.7,
-    surface_temperature_c: -140,
-    core_temperature_c: 12000,
-    distance_from_sun_mkm: 1433.5,
-    type: "Gas giant",
-  },
-  {
-    id: 7,
-    name: "Uranus",
-    size_km: 50724,
-    orbital_speed_kms: 6.8,
-    surface_temperature_c: -195,
-    core_temperature_c: 5000,
-    distance_from_sun_mkm: 2872.5,
-    type: "Ice giant",
-  },
-  {
-    id: 8,
-    name: "Neptune",
-    size_km: 49244,
-    orbital_speed_kms: 5.4,
-    surface_temperature_c: -200,
-    core_temperature_c: 7000,
-    distance_from_sun_mkm: 4495.1,
-    type: "Ice giant",
-  },
+    {
+        id: 1,
+        name: "Mercury",
+        size_km: 4879,
+        orbital_speed_kms: 47.4,
+        surface_temperature_c: 167,
+        core_temperature_c: 7000,
+        distance_from_sun_mkm: 57.9,
+        type: "Terrestrial",
+    },
+    {
+        id: 2,
+        name: "Venus",
+        size_km: 12104,
+        orbital_speed_kms: 35.0,
+        surface_temperature_c: 464,
+        core_temperature_c: 7000,
+        distance_from_sun_mkm: 108.2,
+        type: "Terrestrial",
+    },
+    {
+        id: 3,
+        name: "Earth",
+        size_km: 12742,
+        orbital_speed_kms: 29.8,
+        surface_temperature_c: 15,
+        core_temperature_c: 6000,
+        distance_from_sun_mkm: 149.6,
+        type: "Terrestrial",
+    },
+    {
+        id: 4,
+        name: "Mars",
+        size_km: 6779,
+        orbital_speed_kms: 24.1,
+        surface_temperature_c: -65,
+        core_temperature_c: 1500,
+        distance_from_sun_mkm: 227.9,
+        type: "Terrestrial",
+    },
+    {
+        id: 5,
+        name: "Jupiter",
+        size_km: 139820,
+        orbital_speed_kms: 13.1,
+        surface_temperature_c: -110,
+        core_temperature_c: 24000,
+        distance_from_sun_mkm: 778.5,
+        type: "Gas giant",
+    },
+    {
+        id: 6,
+        name: "Saturn",
+        size_km: 116460,
+        orbital_speed_kms: 9.7,
+        surface_temperature_c: -140,
+        core_temperature_c: 12000,
+        distance_from_sun_mkm: 1433.5,
+        type: "Gas giant",
+    },
+    {
+        id: 7,
+        name: "Uranus",
+        size_km: 50724,
+        orbital_speed_kms: 6.8,
+        surface_temperature_c: -195,
+        core_temperature_c: 5000,
+        distance_from_sun_mkm: 2872.5,
+        type: "Ice giant",
+    },
+    {
+        id: 8,
+        name: "Neptune",
+        size_km: 49244,
+        orbital_speed_kms: 5.4,
+        surface_temperature_c: -200,
+        core_temperature_c: 7000,
+        distance_from_sun_mkm: 4495.1,
+        type: "Ice giant",
+    },
 ];

@@ -11,6 +11,6 @@ const router = Router();
 router.post("/", createSatelliteController);
 router.get("/", getAllSatellitesController);
 router.put("/", updateSatelliteController);
-router.delete("/:id", deleteSatelliteController);
+router.delete("/", deleteSatelliteController);
 
 export default router;

@@ -1,28 +1,34 @@
-let users = [
-  {
-    id: 1,
-    email: "carladeafiaa@tds.com",
-    pwd: "blabla",
-  },
-];
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-export function readAllUsers() {
-  return users;
+const userSchema = new Schema({
+    username: String,
+    email: String,
+    hashPwd: String,
+});
+
+const User = mongoose.model("User", userSchema);
+export default User;
+
+export async function readAllUsers() {
+    return User.find();
 }
 
-export function createUser(user) {
-  users.push(user);
+export async function createUser(user) {
+    await user.save();
 }
 
-export function deleteUser(userId) {
-  const userIndex = users.findIndex((u) => u.id == userId);
-  users.splice(userIndex, 1);
+export async function deleteUser(userId) {
+    // const userIndex = users.findIndex((u) => u.id == userId);
+    // users.splice(userIndex, 1);
+    console.log(userId);
+    await User.findByIdAndDelete(userId);
 }
 
 export function login(id) {
-  const user = users.find((u) => u.id == id);
-  const userInfo = {
-    email: user.email,
-  };
-  return userInfo;
+    const user = users.find((u) => u.id == id);
+    const userInfo = {
+        email: user.email,
+    };
+    return userInfo;
 }

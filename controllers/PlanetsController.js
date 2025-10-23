@@ -7,8 +7,8 @@ import {
 
 //* READ
 
-export function readAllPlanetsController(req, res) {
-    const planets = readAllPlanets();
+export async function readAllPlanetsController(req, res) {
+    const planets = await readAllPlanets();
     if (planets.length === 0) {
         return res.status(404).json({ message: "Planet not found" });
     }
@@ -17,20 +17,23 @@ export function readAllPlanetsController(req, res) {
 
 //* CREATE
 
-export function createPlanetController(req, res) {
-    const newPlanet = createPlanets(req.body);
-    return res.status(200).json({ message: "planet ajouter" + newPlanet });
+export async function createPlanetController(req, res) {
+    const newPlanet = await createPlanets(req.body);
+    return res
+        .status(200)
+        .json({ message: "planet ajouter " + newPlanet.name });
 }
 
 //* DELETE
 
-export function deletePlanetController(req, res) {
-    const planets = readAllPlanets();
-    const planet = planets.find((p) => p.id == req.params.id);
+export async function deletePlanetController(req, res) {
+    const planets = await readAllPlanets();
+    const planet = planets.find((p) => p.name == req.body.name);
     if (!planet) {
         return res.status(404).json({ message: "Planet not found" });
     }
-    deletePlanets(planet.id);
+
+    await deletePlanets(planet.id);
     return res
         .status(200)
         .json({ message: "La planette " + planet.name + " a ete supprimer" });
