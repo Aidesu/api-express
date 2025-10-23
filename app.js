@@ -14,7 +14,7 @@ app.use(express.json());
 app.use("/planets", planetsRoutes);
 app.use("/satellites", satellitesRoutes);
 app.use("/users", usersRoutes);
-app.post("/login", authRoutes);
+app.use("/login", authRoutes);
 
 app.listen(port, () => console.log("Server running on port : " + port));
 

@@ -10,24 +10,26 @@ const userSchema = new Schema({
 const User = mongoose.model("User", userSchema);
 export default User;
 
-export async function readAllUsers() {
-    return User.find();
-}
-
+//* CREATE
 export async function createUser(user) {
     await user.save();
 }
 
+//* READ
+export async function readAllUsers() {
+    return User.find();
+}
+
+//* DELETE
 export async function deleteUser(userId) {
-    // const userIndex = users.findIndex((u) => u.id == userId);
-    // users.splice(userIndex, 1);
-    console.log(userId);
     await User.findByIdAndDelete(userId);
 }
 
-export function login(id) {
-    const user = users.find((u) => u.id == id);
+//* LOGIN
+export async function login(id) {
+    const user = await User.findById(id);
     const userInfo = {
+        username: user.username,
         email: user.email,
     };
     return userInfo;

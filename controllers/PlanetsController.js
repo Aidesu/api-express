@@ -1,22 +1,11 @@
+import Planet from "../models/planets.js";
 import {
     createPlanets,
-    readAllPlanets,
     updatePlanets,
     deletePlanets,
 } from "../models/planets.js";
 
-//* READ
-
-export async function readAllPlanetsController(req, res) {
-    const planets = await readAllPlanets();
-    if (planets.length === 0) {
-        return res.status(404).json({ message: "Planet not found" });
-    }
-    res.status(200).json(planets);
-}
-
 //* CREATE
-
 export async function createPlanetController(req, res) {
     const newPlanet = await createPlanets(req.body);
     return res
@@ -24,45 +13,37 @@ export async function createPlanetController(req, res) {
         .json({ message: "planet ajouter " + newPlanet.name });
 }
 
-//* DELETE
-
-export async function deletePlanetController(req, res) {
-    const planets = await readAllPlanets();
-    const planet = planets.find((p) => p.name == req.body.name);
-    if (!planet) {
+//* READ
+export async function readAllPlanetsController(req, res) {
+    const planets = await Planet.find();
+    if (planets.length === 0) {
         return res.status(404).json({ message: "Planet not found" });
     }
-
-    await deletePlanets(planet.id);
-    return res
-        .status(200)
-        .json({ message: "La planette " + planet.name + " a ete supprimer" });
+    res.status(200).json(planets);
 }
 
 //* UPDATE
-
-export function updatePlanetController(req, res) {
-    const planets = readAllPlanets();
-    const planet = planets.find((p) => p.id == req.body.id);
+export async function updatePlanetController(req, res) {
+    const planet = await Planet.findOne({ name: req.body.name });
     if (!planet) {
         return res.status(404).json({ message: "Planet not found" });
     }
 
-    const planetObj = {
-        id: planet.id,
-        name: req.body.name || planet.name,
-        size_km: req.body.size_km || planet.size_km,
-        orbital_speed_kms:
-            req.body.orbital_speed_kms || planet.orbital_speed_kms,
-        surface_temperature_c:
-            req.body.surface_temperature_c || planet.surface_temperature_c,
-        core_temperature_c:
-            req.body.core_temperature_c || planet.core_temperature_c,
-        distance_from_sun_mkm:
-            req.body.distance_from_sun_mkm || planet.distance_from_sun_mkm,
-        type: req.body.type || planet.type,
-    };
+    const planetObj = req.body;
 
-    updatePlanets(planetObj);
+    await updatePlanets(planetObj, planet._id);
     return res.status(200).json({ message: "Entity has been updated" });
+}
+
+//* DELETE
+export async function deletePlanetController(req, res) {
+    const planet = await Planet.findOne({ name: req.body.name });
+    if (!planet) {
+        return res.status(404).json({ message: "Planet not found" });
+    }
+
+    await deletePlanets(planet._id);
+    return res
+        .status(200)
+        .json({ message: "La planette " + planet.name + " a ete supprimer" });
 }

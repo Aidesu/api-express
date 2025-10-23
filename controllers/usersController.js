@@ -1,15 +1,7 @@
 import { readAllUsers, createUser, deleteUser } from "../models/users.js";
-import bcrypt from "bcrypt";
 import User from "../models/users.js";
 
-export async function readAllUsersController(req, res) {
-    const users = await User.find();
-    if (users.length === 0) {
-        return res.status(404).json({ message: "No user found" });
-    }
-    res.status(200).json(users);
-}
-
+//* CREATE
 export async function createUserController(req, res) {
     const users = await readAllUsers();
     const saltRounds = 10;
@@ -26,6 +18,16 @@ export async function createUserController(req, res) {
     res.status(200).json({ newUser });
 }
 
+//* READ
+export async function readAllUsersController(req, res) {
+    const users = await User.find();
+    if (users.length === 0) {
+        return res.status(404).json({ message: "No user found" });
+    }
+    res.status(200).json(users);
+}
+
+//* DELETE
 export async function deleteUserController(req, res) {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {

@@ -11,6 +11,6 @@ const router = Router();
 router.post("/", createPlanetController);
 router.get("/", readAllPlanetsController);
 router.put("/", updatePlanetController);
-router.delete("/:id", deletePlanetController);
+router.delete("/", deletePlanetController);
 
 export default router;
