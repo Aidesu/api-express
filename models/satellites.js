@@ -15,22 +15,38 @@ export default Satellite;
 
 //* CREATE
 export async function createSatellites(satellite) {
-    await satellite.save();
+    try {
+        await satellite.save();
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
 }
 
 //* READ
 export async function getAllSatellites() {
-    return await Satellite.find();
+    try {
+        return await Satellite.find();
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
 }
 
 //* UPDATE
 export async function updateSatellites(satObj, id) {
-    await Satellite.updateOne({ _id: id }, { $set: satObj });
+    try {
+        await Satellite.updateOne({ _id: id }, { $set: satObj });
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
 }
 
 //* DELETE
 export async function deleteSatellites(id) {
-    await Satellite.findByIdAndDelete(id);
+    try {
+        await Satellite.findByIdAndDelete(id);
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
 }
 
 //* ######################### DATA #########################
